@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面跳转示例</title>
+    <style>
+        .page { display: none; }
+        .page.active { display: block; }
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; text-align: center; }
+        input { padding: 10px; width: 80%; margin-bottom: 20px; }
+        button { padding: 10px 20px; cursor: pointer; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 10px; }
+
+        /* 返回按钮样式 */
+        .back-button {
+            position: fixed; /* 固定在页面左上角 */
+            top: 20px;
+            left: 20px;
+            padding: 10px 15px;
+            background-color: #4CAF50; /* 绿色背景 */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- G页 -->
+    <div id="page-g" class="page active">
+        <div class="container">
+            <h1>欢迎来到G页</h1>
+            <form id="name-form">
+                <input type="text" id="name-input" placeholder="请输入您的名称">
+                <br>
+                <button type="submit">提交</button>
+                <button type="button" onclick="submitAnonymously()">选择匿名</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- H页 -->
+    <div id="page-h" class="page">
+        <button class="back-button" onclick="goBackToG()">返回G页</button> <!-- 返回按钮 -->
+        <div class="container">
+            <h1>欢迎来到H页</h1>
+            <ul id="name-list">
+                <!-- 提交的姓名将会显示在这里 -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 提交表单时处理函数
+        document.getElementById('name-form').addEventListener('submit', function(event) {
+            event.preventDefault();  // 阻止表单默认提交行为
+            const nameInput = document.getElementById('name-input').value.trim();
+            if (nameInput.length === 0) {
+                alert('请输入名称或者选择匿名');
+            } else {
+                saveName(nameInput);  // 保存名称
+                showPageH();  // 跳转到H页
+            }
+        });
+
+        // 选择匿名时的处理
+        function submitAnonymously() {
+            saveName('匿名');  // 存储匿名
+            showPageH();  // 跳转到H页
+        }
+
+        // 保存名称到localStorage
+        function saveName(name) {
+            let nameList = JSON.parse(localStorage.getItem('nameList')) || [];  // 从localStorage中获取已存储的名称数组
+            nameList.push(name);  // 将新名称添加到数组
+            localStorage.setItem('nameList', JSON.stringify(nameList));  // 更新localStorage中的数组
+        }
+
+        // 显示H页并展示所有提交的姓名
+        function showPageH() {
+            document.getElementById('page-g').classList.remove('active');
+            document.getElementById('page-h').classList.add('active');
+            
+            displayNames();  // 显示存储的名称
+        }
+
+        // 返回G页
+        function goBackToG() {
+            document.getElementById('page-h').classList.remove('active');
+            document.getElementById('page-g').classList.add('active');
+        }
+
+        // 将存储的姓名列表显示在H页上
+        function displayNames() {
+            const nameList = JSON.parse(localStorage.getItem('nameList')) || [];
+            const nameListElement = document.getElementById('name-list');
+            nameListElement.innerHTML = '';  // 清空列表
+
+            nameList.forEach(function(name) {
+                const li = document.createElement('li');
+                li.textContent = name;
+                nameListElement.appendChild(li);
+            });
+        }
+
+        // 页面加载时，从localStorage中读取并显示H页的内容
+        window.addEventListener('load', function() {
+            const nameList = JSON.parse(localStorage.getItem('nameList'));
+            if (nameList && nameList.length > 0) {
+                showPageH();  // 如果有存储的名称，直接显示H页
+            }
+        });
+    </script>
+
+</body>
+</html>
+

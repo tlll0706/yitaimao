@@ -1,0 +1,321 @@
+
+/* 路路：设置了一下页面按照窗口缩放 */
+/* 整体格式 */
+body,html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif; /* 设置字体为arial，没有就用sans */
+}
+
+/* -------- 页面A 格式 -------- */
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 确保文字内容水平居中 */
+    justify-content: center; /* 确保内容垂直居中 */
+    
+    width: 100vw;
+    height: 100vh;/* 让容器填满视口高度 */
+
+    overflow: hidden;
+}
+.count {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 24px;
+    color: black;
+    display: none;
+    z-index: 10;
+    animation: colorFade 1s ease-in-out;
+}
+/* 动画格式 */
+@keyframes colorFade {
+    from {color: lightgrey;}
+    to {color: black;}
+}
+/* 切换页面的图片 格式 */
+.button-img {
+    display: block;
+    width: 570px;
+    height: 400px;
+    transition: opacity 0.3s ease;
+}
+/* ‘返回’按钮 格式 */
+.nav-button {
+    position: absolute; /* 固定在左上角 */
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+}
+.nav-button:hover {
+    background-color: gray;
+}
+
+
+/* -------- 页面D：三个选项 -------- */
+/* 整体的格式 */
+.button-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;/*水平居中*/
+    align-items: center;/*垂直居中*/
+    gap: 10px;
+    top: 0;/*将container 高度盛满。使得 align-items 有效果*/
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto; /*确保子元素在容器中居中*/
+}
+/* 页面D 图片类型的格式 */
+.button-container img {
+    width: 400px;
+    height: 400px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+.button-container img:hover {
+    border-color: gray;
+}
+
+
+/* -------- 页面F：小图片 -------- */
+.small-img {
+    position: absolute;
+    top: 500px; /* 可以根据需要调整位置 */
+    left: 46%; /* 可以根据需要调整位置 */
+    width: 175px; /* 调整图片大小 */
+    cursor: pointer; /* 显示为可点击 */
+    z-index: 1000; /* 确保图片位于前面 */
+}
+
+
+
+
+/* -------- 页面F：画布 -------- */
+/* 清除按钮 样式 */
+.clear-button {
+    position: absolute; /* 固定在右上角 */
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+}
+/* 画布样式 */
+#graffitiCanvas {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #000;
+    position: absolute;
+    top:0;
+    left: 0;
+    display: block;
+    background-color: transparent;
+}
+
+.overlay-img {
+    position: absolute; /* 允许自由调整位置 */
+    cursor: pointer; /* 鼠标悬停时显示为手形 */
+    z-index: 2000; /* 确保在其他元素之上 */
+    transition: transform 0.3s ease; /* 添加过渡效果 */
+}
+
+
+
+/* -------- 页面G：填名字 -------- */
+/* 输入栏的样式。*/
+.npt { 
+    padding: 10px;
+    width: 90%;
+    margin-bottom: 20px;/* 底部间距 */
+    /*font-size: 16px; 字体大小 */
+}
+/* 提交按钮 匿名按钮 */
+.g-btn {/* 按钮上下边距10px，左右边距20px；光标变为指针以表示可点击 */
+    padding: 10px 20px;
+    cursor: pointer; 
+    /* 
+    margin-top: 10px;
+    font-size: 16px;  */
+}
+.g-btn:hover {
+    /* 当鼠标悬浮时的效果 */
+    background-color: #45a049;
+}
+
+
+
+/* -------- 页面F：功德名捕 -------- */
+
+/* 功德名簿 图片格式 */
+#h-img {
+    position: fixed; /* 固定在正中央 */
+    top: 75px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: auto;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+#page-i img {
+    width: 100%;
+    max-width: 1100px; /* 最大宽度 */
+    height: auto; /* 自动调整高度 */
+}
+
+
+#g1-img {
+    
+    top: 100px; /* 根据需要调整 */
+    left: 100; /* 左侧 */
+    width: 100px; /* 调整大小 */
+    z-index: 1000; 
+}
+
+#g2-img {
+
+    top: 500px; /* 根据需要调整 */
+    right: 100; /* 右侧 */
+    width: 175px; /* 调整大小 */
+    z-index: 1000; 
+}
+
+
+/* 列表样式 */
+ul { 
+    list-style-type: none; padding: 0; 
+    /* 对无序列表的样式设置，不显示默认项目符号 */
+}
+li { 
+    margin-bottom: 10px; 
+    /* 对每个列表的样式设置，底部有10px间距 */
+}
+/* 列表边框+滚动条 */
+
+.list-container {
+    position: absolute; /* 改为绝对定位 */
+    top: 180px; /* 从顶部开始 */
+    left: 600px; /* 从左侧开始 */
+    right: 600px; /* 右侧填满 */
+    bottom: 10px; /* 底部填满 */
+    max-height: calc(100vh - 350px); /* 根据图片和按钮调整最大高度 */
+    overflow-y: auto;  /* 允许垂直滚动 */
+    border: 1px solid #514e4e; /* 可选，添加边框 */
+    padding: 10px; /* 可选，内边距 */
+    z-index: 2; /* 确保在上层 */
+}
+
+
+
+
+    
+
+/* -------- 页面B2：烧香 -------- */
+/* 路路：你定义了三次container。我把这个删掉了。在最开头合并了所有的container。*/
+/* .container,.b2-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+*/
+
+/* 路路：你定义了两个b2-container。
+这种情况下，后面重新定义的会覆盖前面的。
+我保留了后者，补充了前面定义的position。*/
+
+/* 烧香整体格式 */
+.b2-container{
+    position: relative;/* 前后只有这个区别 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+/* 烧香 点击后的效果*/
+.b2-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.b2-container.active {
+    display: flex;
+}
+.b2-button-container img {
+    width: 500px;
+    height: 400px;
+    cursor: pointer;
+    margin: 10px;
+    object-fit: contain;
+}        
+/* 烧香 计数器 */
+#b2-count {
+    font-size: 24px;
+    color: black;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 10;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+
+
+/* -------- 其他 -------- */
+
+/* 用于隐藏页面 */
+.hidden {/*  */
+    display: none;
+}
+
+
+
+/* 通过ID设置 */
+
+/* #name-input-container {
+    text-align: center;
+    margin-top: 20px;
+    }
+    
+    #name-input-container input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+    margin-bottom: 10px;
+    }
+    
+    #name-input-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    }
+     */

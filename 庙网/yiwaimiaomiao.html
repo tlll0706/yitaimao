@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>以太庙</title>
+    
+    <!-- 路路：链接css -->
+    <link rel="stylesheet" href="css.css">
+
+</head>
+<body>
+    <!-- 页面A 首页 大门 -->
+    <div  class="container" id="page-a">
+        <button type="button" onclick="showPageB(); handleClick()" onmouseover="handleMouseOver(this)" onmouseout="handleMouseOut(this)" style="border: none; background: none;">
+            <img class="button-img" src="images/1.jpg" alt="进入页面">
+        </button>
+        <span id="count" class="count"></span>
+        <audio id="background-music" src="sounds/background-music.mp3" loop></audio><!--添加背景音乐-->
+    </div>
+
+    <!-- 页面B 庙门 -->
+    <div  class="container hidden" id="page-b">
+        <button type="button" onclick="showPageC();handleClick()" onmouseover="handleMouseOver(this)" onmouseout="handleMouseOut(this)" style="border: none; background: none;">
+            <img id="button-img" src="images/2.jpg" alt="进入页面" class="button-img">
+        </button>
+        <button class="nav-button" onclick="showPageA()">返回</button>
+    </div>
+
+    <!-- 页面C 欢迎词 -->
+    <div class="container hidden" id="page-c">
+        <button type="button" onclick="showPageD();handleClick()" onmouseover="handleMouseOver(this)" onmouseout="handleMouseOut(this)" style="border: none; background: none;">
+            <img id="button-img" src="images/3.jpg" alt="进入页面" class="button-img">
+        </button>
+        <button class="nav-button" onclick="showPageB()">返回</button>
+    </div>
+
+    <!-- 页面D 三个选项 -->
+    <div class="container hidden" id="page-d"  >
+        <div class="button-container">
+            <img src="images/4-1.jpg" alt="页面B2" onmouseover="changeImage(this, 'images/4-1-hover.jpg')" onmouseout="resetImage(this, 'images/4-1.jpg')" onclick="showPageB2();handleClick()">
+            <img src="images/4-2.jpg" alt="页面E" onmouseover="changeImage(this, 'images/4-2-hover.jpg')" onmouseout="resetImage(this, 'images/4-2.jpg')" onclick="showPageE();handleClick()">
+            <img src="images/4-3.jpg" alt="点击音效" onmouseover="changeImage(this, 'images/4-3-hover.jpg')" onmouseout="resetImage(this, 'images/4-3.jpg')" onclick="playClickSound('click-sound-3')">
+        </div>
+        <button class="nav-button" onclick="showPageC()">返回</button>
+    </div>
+
+    <!-- 页面E 庙内 -->
+    <div class="container hidden" id="page-e"  >
+        <button type="button" onmouseover="handleMouseOver(this)" onmouseout="handleMouseOut(this)" style="border: none; background: none;">
+            <img id="button-img" src="images/15.jpg" alt="第五张图片" onclick="showPageF()">
+        </button>
+        <button class="nav-button" onclick="showPageD()">返回</button>
+    </div>
+
+    <!-- 页面F 小图片+绘画-->
+    <div class="container hidden" id="page-f" >
+        <!-- 原有的4-hover.jpg图片 -->
+        <button type="button" onmouseover="handleMouseOver(this)" onmouseout="handleMouseOut(this)" style="border: none; background: none;">
+            <img id="button-img" src="images/15.jpg" alt="第六张图片">
+        </button>
+
+        <!-- 添加的小图片(第六张)按钮，位置通过position: absolute调整 -->
+        <img id="small-img" src="images/5-hover.jpg" alt="点击跳转到G页" class="small-img" onclick="showPageG()">
+
+        <img id="image1" src="images/9.jpg" alt="图片1" class="overlay-img" style="top: 45%; left: 37.55%; width: 152px; height: auto;"
+        onclick="playClickSound('click-sound-4');"
+             onmouseover="this.src='images/9-hover.jpg'" onmouseout="this.src='images/9.jpg'">
+        <img id="image2" src="images/10.jpg" alt="图片2" class="overlay-img" style="top: 48.5%; left: 59.45%; width: 97px; height: auto;"
+        onclick="playClickSound('click-sound-5');"
+             onmouseover="this.src='images/10-hover.jpg'" onmouseout="this.src='images/10.jpg'"> 
+        <img id="image3" src="images/11.jpg" alt="图片3" class="overlay-img" style="top: 36.58%; left: 45.5%; width: 241px; height: auto;"
+        onclick="playClickSound('click-sound-6');"
+             onmouseover="this.src='images/11-hover.jpg'" onmouseout="this.src='images/11.jpg'">
+
+        <img id="image1" src="images/15-hover.jpg" alt="图片4" class="overlay-img" style="top: 20.3%; left: 4.9%; width: 364px; height: auto;"
+        onclick="showPageI();">
+
+            
+    
+        <!-- 画布 -->
+        <canvas id="graffitiCanvas" style="border:1px solid #000;"></canvas>
+        
+<!-- 路路：保留了清楚按钮。设置了格式为“clear-button” -->
+        <!-- 清除按钮 -->
+        <button type="button" class = "clear-button" onclick="clearGraffiti()">清除涂鸦</button> 
+        
+        <!-- 返回 -->
+        <button class="nav-button" onclick="showPageE()">返回</button>
+    </div>
+
+<!-- 路路：你写了两个page-f，后面的这个我删掉了。清除按钮保留在上面。-->
+    <!-- 页面F 绘画清除 
+    <div class="container hidden" id="page-f">
+        <button type="button" onclick="showPageE()">返回</button>
+        <canvas id="graffitiCanvas" style="border:1px solid #000;"></canvas>
+        <button type="button" onclick="clearGraffiti()">清除涂鸦</button> 清除按钮 
+    </div>
+-->
+
+
+    <!-- 页面G  填名字 -->
+    <div class="container hidden" id="page-g">
+            <!-- 标题 -->
+            <h1>欢迎来到功德名簿</h1>
+
+            <!-- 返回按钮 -->
+            <button class="nav-button" onclick="showPageF()">返回</button>
+
+
+<!-- 路路：增加了显示功德碑按钮-->
+            <form id="name-form">
+                <!-- 输入栏 -->
+                <input type="text" class="npt" id="name-input" placeholder="请输入你的昵称或你想写的话" required>
+                <br>
+                <!-- 提交 -->
+                <button type="submit" class="g-btn">提交</button>
+                <!-- 匿名按钮 -->
+                <button type="button" class="g-btn" onclick="submitAnonymously()">选择匿名</button>
+                <!-- 显示功德碑页面的按钮 -->
+                <button type="button" class="g-btn" onclick="showPageH()">功德名簿</button>
+            </form>
+
+                   <!--页面g  图片-->
+    <div class="image-container">
+        <img id="g1-img" src="images/8.jpg" alt="毛笔" class="g1-img">
+        <img id="g2-img" src="images/8-hover.jpg" alt="墨碟" class="g2-img">
+    </div>
+
+    </div>
+    
+    
+
+
+    <!-- 页面H 功德碑 -->
+
+    <div class="container hidden" id="page-h">
+        <button class="nav-button" onclick="showPageG()">返回</button>
+
+        <!-- 功德碑图片 -->
+        <img id="h-img" src="images/6.jpg" alt="功德碑" >
+
+<!-- 路路：为不知道下面这个加入图片想做什么？？？就删掉了 -->
+<!--         <img id="new-img" src="images/6.jpg" alt="新增图片" style="width: 400px; height: 200px; margin-top: 20px;"> -->
+
+        <!-- 显示名字，增加了滚动条 -->
+        <ul id="name-list" class="list-container">
+
+        </ul>
+        <!-- 新增图片 -->
+    <img id="new-img" src="images/12.jpg" alt="新增图片" style="width: 800px; height: 800px; margin-top: 20px; position: relative; z-index: 1;">
+    </div>
+
+ 
+    <!-- 页面B2 烧香-->
+    <div class="b2-container hidden" id="b2-container" >
+        <button class="nav-button" onclick="showPageD()">返回</button>
+        <div class="b2-button-container">
+            <img src="images/4-1.jpg" alt="点击音效"
+            onmouseover="changeImage(this, 'images/4-1-hover.jpg')" 
+             onmouseout="resetImage(this, 'images/4-1.jpg')"
+             onclick="incrementAndDisplayCount();handleClick()">
+        <span id="b2-count">0 次点击</span>
+        </div>
+    </div>
+
+    <!-- 页面I 显示图片4 -->
+<div class="container hidden" id="page-i">
+    <!-- 显示的照片 -->
+    <img id="large-img" src="images/14.jpg" alt="大图片4">
+
+    <!-- 返回按钮 -->
+    <button class="nav-button" onclick="showPageF()">返回</button>
+    </div>
+
+
+
+<!-- 路路：链接js -->
+    <script src="script.js"></script>
+    
+
+</body>
+</html>

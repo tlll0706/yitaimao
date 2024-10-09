@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>以太庙</title>
+    <style>
+        .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 确保内容水平居中 */
+    justify-content: center; /* 确保内容垂直居中 */
+    height: 100vh; /* 让容器填满视口高度 */
+}
+
+        .count {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 24px;
+            color: black;
+            display: none;
+            z-index: 10;
+            animation: colorFade 1s ease-in-out;
+        }
+
+        @keyframes colorFade {
+            from {color: lightgrey;}
+            to {color: black;}
+        }
+
+        .button-img {
+            display: block;
+            width: 570px;
+            height: 400px;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            color: white;
+            background-color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .nav-button:hover {
+            background-color: gray;
+        }
+
+        .button-container {
+            position: absolute;
+            display: flex;
+            justify-content: center;/*水平居中*/
+            align-items: center;/*垂直居中*/
+            gap: 10px;
+            top: 0;/*将container 高度盛满。使得 align-items 有效果*/
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto; /*确保子元素在容器中居中*/
+        }
+
+        .button-container img {
+            width: 400px;
+            height: 400px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        .button-container img:hover {
+            border-color: gray;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+
+        .container,.b2-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .b2-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .b2-button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .b2-container.active {
+            display: flex;
+
+        }
+
+        .b2-button-container img {
+            width: 500px;
+            height: 400px;
+            cursor: pointer;
+            margin: 10px;
+            object-fit: contain;
+        }        
+
+        #b2-count {
+            font-size: 24px;
+            color: black;
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 10;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #graffitiCanvas {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #000;
+            position: absolute;
+            top:0;
+            left: 0;
+            display: block;
+            background-color: transparent;
+        }
+
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #small-img {
+            position: absolute;
+            top: 600px; /* 可以根据需要调整位置 */
+            left: 775px; /* 可以根据需要调整位置 */
+            width: 150px; /* 调整图片大小 */
+            height: 120px;
+            cursor: pointer; /* 显示为可点击 */
+            z-index: 1000; /* 确保图片位于前面 */
+}
+        
+#new-img {
+    position: absolute;
+    top: 50px; /* 距离顶部20px */
+    right: 650px; /* 距离右侧20px */
+    width: 100px; /* 调整宽度 */
+    height: auto; /* 保持宽高比 */
+    z-index: 10; /* 确保图片位于前景 */
+}
+
+#name-input-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#name-input-container input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+#name-input-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.my-form input {
+    padding: 10px;
+    font-size: 16px;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+
+.submit-btn:hover {
+    /* 当鼠标悬浮时的效果 */
+    background-color: #45a049;
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- 页面A -->
+    <div class="container" id="page-a">
+        <button type="button" onclick="showPageB(); handleClick()" onmouseover="handleMouseOver(this)" onmouseout="handleMouseOut(this)" style="border: none; background: none;">
+            <img class="button-img" src="images/1.jpg" alt="进入页面">
+        </button>
+        <span id="count" class="count"></span>
+        <audio id="background-music" src="sounds/background-music.mp3" loop></audio><!--添加背景音乐-->
+    </div>
+
+    <!-- 页面B -->
+    <div class="container hidden" id="page-b">
+        <button class="nav-button" onclick="showPageA()">返回</button>
+        <button type="button" onclick="showPageC();handleClick()" onmouseover="handleMouseOver(this)" onmouseout="handleMouseOut(this)" style="border: none; background: none;">
+            <img id="button-img" src="images/2.jpg" alt="进入页面" class="button-img">
+        </button>
+    </div>
+
+    <!-- 页面C -->
+    <div class="container hidden" id="page-c">
+        <button type="button" onclick="showPageD();handleClick()" onmouseover="handleMouseOver(this)" onmouseout="handleMouseOut(this)" style="border: none; background: none;">
+            <img id="button-img" src="images/3.jpg" alt="进入页面" class="button-img">
+        </button>
+        <button class="nav-button" onclick="showPageB()">返回</button>
+    </div>
+
+    <!-- 页面D -->
+    <div class="container hidden" id="page-d">
+        <div class="button-container">
+            <img src="images/4-1.jpg" alt="页面B" onmouseover="changeImage(this, 'images/4-1-hover.jpg')" onmouseout="resetImage(this, 'images/4-1.jpg')" onclick="showPageB2();handleClick()">
+            <img src="images/4-2.jpg" alt="页面E" onmouseover="changeImage(this, 'images/4-2-hover.jpg')" onmouseout="resetImage(this, 'images/4-2.jpg')" onclick="showPageE();handleClick()">
+            <img src="images/4-3.jpg" alt="点击音效" onmouseover="changeImage(this, 'images/4-3-hover.jpg')" onmouseout="resetImage(this, 'images/4-3.jpg')" onclick="playClickSound('click-sound-3')">
+        </div>
+        <button class="nav-button" onclick="showPageC()">返回</button>
+    </div>
+
+    <!-- 页面E -->
+    <div class="container hidden" id="page-e">
+        <button type="button" onmouseover="handleMouseOver(this)" onmouseout="handleMouseOut(this)" style="border: none; background: none;">
+            <img id="button-img" src="images/4-hover.jpg" alt="第五张图片" onclick="showPageF()">
+        </button>
+        <button class="nav-button" onclick="showPageD()">返回</button>
+    </div>
+
+    <!-- 页面F -->
+    <div class="container hidden" id="page-f">
+    <!-- 原有的4-hover.jpg图片 -->
+    <button type="button" onmouseover="handleMouseOver(this)" onmouseout="handleMouseOut(this)" style="border: none; background: none;">
+        <img id="button-img" src="images/4-hover.jpg" alt="第六张图片">
+    </button>
+    
+    <!-- 添加的小图片按钮，位置通过position: absolute调整 -->
+    <img id="small-img" src="images/5-hover.jpg" alt="点击跳转到G页" class="small-img" onclick="showPageG()">
+
+    <button class="nav-button" onclick="showPageE()">返回</button>
+    
+    <canvas id="graffitiCanvas" style="border:1px solid #000;"></canvas>
+    </div>
+
+    <!-- 页面G -->
+<div class="container hidden" id="page-g">
+    <button class="nav-button" onclick="showPageF()">返回</button>
+    <form class="my-form" onsubmit="submitName(event)">
+        <input type="text" placeholder="输入内容" required style="padding: 10px; font-size: 16px;">
+        <button type="submit" class="submit-btn" style="padding: 10px 20px; font-size: 16px;">提交</button>
+    </form>
+</div>
+
+    <!-- 页面H -->
+    <div class="container hidden" id="page-h">
+        <button class="nav-button" onclick="showPageG()">返回</button>
+        <img id="h-img" src="images/5.jpg" alt="第八张图片" style="width: 100%; height: auto;">
+        <img id="new-img" src="images/6.jpg" alt="新增图片" style="width: 400px; height: 200px; margin-top: 20px;">
+        <div id="name-display"></div> <!-- 用于显示名称 -->
+        </div>
+ 
+    <!-- 页面B2 -->
+    <div id="b2-container" class="b2-container">
+        <button class="nav-button" onclick="showPageD()">返回</button>
+        <div class="b2-button-container">
+            <img src="images/4-1.jpg" alt="点击音效"
+            onmouseover="changeImage(this, 'images/4-1-hover.jpg')" 
+             onmouseout="resetImage(this, 'images/4-1.jpg')"
+             onclick="incrementAndDisplayCount();handleClick()">
+        <span id="b2-count">0 次点击</span>
+        </div>
+    </div>
+
+    <div class="container hidden" id="page-f">
+        <button type="button" onclick="showPageE()">返回</button>
+        <canvas id="graffitiCanvas" style="border:1px solid #000;"></canvas>
+        <button type="button" onclick="clearGraffiti()">清除涂鸦</button> <!-- 清除按钮 -->
+    </div>
+
+    <form class="my-form" onsubmit="submitName(event)">
+
+    
+
+    <script>
+        var images = ['images/1.jpg', 'images/2.jpg', 'images/3.jpg', 'images/4.jpg'];
+        var hoverImages = ['images/1-hover.jpg', 'images/2-hover.jpg', 'images/3-hover.jpg', 'images/4-hover.jpg'];
+        var currentIndex = 0;
+        var finished = false;
+        var clickSound1 = new Audio('sounds/click-sound-1.mp3');
+        var clickSound2 = new Audio('sounds/click-sound-2.mp3');
+        var clicksound3 = new Audio('sounds/click-sound-3.mp3');
+        var isClickDisabled = false;
+        var backgroundMusic = document.getElementById('background-music');
+        var isbackgroundMusicPlaying = false;
+        var isClickSound1Playing = false;
+        var isUpdating = false;
+
+        // 当鼠标悬停时更换图片
+        function changeImage(element, newSrc) {
+        element.src = newSrc;
+        }
+
+        // 当鼠标移开时重置为原始图片
+        function resetImage(element, originalSrc) { 
+            element.src = originalSrc;
+        }
+
+        function incrementAndDisplayCount() {
+            
+            if (isUpdating) {
+                return;
+            }
+            
+            isUpdating = true;
+
+            var countElement = document.getElementById('b2-count');
+            var clickCount = (parseInt(localStorage.getItem('b2ClickCount')) || 0) + 1;
+
+            setInterval(function() {
+            localStorage.setItem('b2ClickCount',clickCount);
+
+
+            countElement.style.opacity = 0; // 初始化透明度为0
+
+            setTimeout(function () {
+
+                countElement.innerHTML ='第' + clickCount + ' 个人';
+                countElement.style.display = 'block';
+                setTimeout(function () {
+                    countElement.style.opacity = 1; // 渐变显示
+                    
+                    setTimeout(function () {
+
+                    },1000);
+                }, 50); // 延迟确保显示元素后才开始渐变
+            }, 100); // 透明度变化延迟
+        },1500);
+    }
+
+            
+
+        function hideB2Countainer() {
+            var b2Container = document.getElementById('b2-container');
+            b2Container.classList,remove('active');
+        }
+
+        function handleClick() {
+            if (isClickDisabled || isClickSound1Playing) return;
+
+            isClickDisabled = true;
+            isClickSound1Playing = true;
+
+            playClickSound('click-sound-1');
+
+            clickSound1.onended = function () {
+                isClickSound1Playing = false;
+                isClickDisabled = false;
+            };
+        
+            if (!isbackgroundMusicPlaying) {
+                playbackgroundMusic();
+            }
+
+            clickSound1.play().catch(function(error) {
+                console.error('音效播放失败',error);
+                isClickDisabled = false;
+                isClickSound1Playing = false;
+            });
+        
+
+            setTimeout(function () {
+                var imgElement = document.querySelectorAll('.button-img');
+                var countElement = document.getElementById('count');
+                var clickCount = (parseInt(localStorage.getItem('clickCount')) || 0) + 1;
+
+                var clickedImgSrc = event.target.src;
+                var imgFileName = clickedImgSrc.split('/').pop();
+
+
+
+                if ((imgFileName === '1.jpg'  || imgFileName === '1-hover.jpg')&& !isbackgroundMusicPlaying) {
+                    playbackgroundMusic();
+                }
+                
+                clickSound1.play();
+                
+                if (currentIndex < images.length - 1) {
+                    currentIndex++;
+                    imgElement.forEach(imgElement => imgElement.src = images[currentIndex]);
+
+                    if (currentIndex === 1) {
+                        document.querySelector('.button-container').style.display = 'flex';
+                    }
+
+                    countElement.style.display = 'none';
+                } else {
+                    finished = true;
+                    localStorage.setItem('clickCount', clickCount);
+                    gradualCountDisplay(clickCount);
+                }
+
+                isClickDisabled = false;
+            }, 1500);
+        }
+
+        function playbackgroundMusic() {
+            var backgroundMusic = document.getElementById('background-music')
+            if (isbackgroundMusicPlaying) return;
+
+            backgroundMusic.play().then(function() {
+                isbackgroundMusicPlaying = true;
+            }).catch(function(error) {
+                console.log('播放背景音乐', error);
+            });
+            
+        }
+
+        function playClickSound(type) {
+            if (type === 'click-sound-3') {
+               clicksound3.play();
+                }
+                } 
+
+        function playClickSound(type) {
+            if (type === 'click-sound-1') {
+                if (isClickSound1Playing) return; // 如果sound-1正在播放，返回
+
+                isClickSound1Playing = true;
+                clickSound1.play().then(function() {
+                    isClickSound1.onended = function() {
+                    isClickSound1Playing = false;
+                    };
+                }).catch(function(error) {
+                    isClickSound1Playing = false;
+                    console.log('播放click-sound-1', error);
+                });
+            } else if (type === 'click-sound-2') {
+                if (!isClickSound1Playing) { // sound-1未播放时才播放其他音效
+                    clickSound2.play();
+                }
+            } else if (type === 'click-sound-3') {
+                if (!isClickSound1Playing) { // sound-1未播放时才播放其他音效
+                    clicksound3.play();
+                }
+            }
+        }
+
+        function handleMouseOver(button) {
+            var imgElement = button.querySelector('.button-img');
+            if (!imgElement) return;
+
+            var imageName = imgElement.getAttribute('src').split('/').pop();
+            var index = images.map(image => image.split('/').pop()).indexOf(imageName);
+
+            if (index !== -1) {
+            imgElement.src = hoverImages[index];
+        }
+    }
+
+        function handleMouseOut(button) {
+            var imgElement = button.querySelector('.button-img');
+            if (!imgElement) return;
+
+            var imageName = imgElement.getAttribute('src').split('/').pop();
+            var index = hoverImages.map(image => image.split('/').pop()).indexOf(imageName);
+
+            if (index !== -1) {
+            imgElement.src = images[index];
+        }
+    }
+
+    function submitName(event) {
+    event.preventDefault(); // 防止表单提交的默认行为
+    const userName = document.querySelector('.my-form input[type="text"]').value; // 获取输入框的值
+
+    let displayName = userName || '匿名'; // 如果用户未输入名称则显示匿名
+    localStorage.setItem('displayName', displayName); // 将名称存入 localStorage
+
+    showPageH(); // 跳转到 H 页
+}
+
+
+function showPageA() {
+    hideAllPages();
+    document.getElementById('page-a').classList.remove('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+function showPageB() {
+    hideAllPages();
+    document.getElementById('page-b').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function showPageC() {
+    hideAllPages();
+    document.getElementById('page-c').classList.remove('hidden');
+}
+
+function showPageD() {
+    hideAllPages();
+    document.getElementById('page-d').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function showPageE() {
+    hideAllPages();
+    document.getElementById('page-e').classList.remove('hidden');
+}
+
+function showPageF() {
+    hideAllPages();
+    document.getElementById('page-f').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function showPageG() {
+    hideAllPages();
+    document.getElementById('page-g').classList.remove('hidden');
+    document.querySelector('.my-form').style.display = 'flex'; // 显示表单
+    document.body.style.overflow = 'hidden'; 
+    document.getElementById('g-img').src = 'images/5.jpg'; // 设置为5.jpg
+}
+
+function showPageH() {
+    hideAllPages();
+    document.getElementById('page-h').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    // 获取并显示存储的用户名称
+    const savedName = localStorage.getItem('displayName'); // 从 localStorage 获取存储的名称
+    if (savedName) {
+        document.getElementById('name-display').innerText = "用户名称: " + savedName; // 显示名称
+    } else {
+        document.getElementById('name-display').innerText = "用户名称: 匿名"; // 如果未找到名称，则显示匿名
+    }
+}
+
+
+function showPageB2() {
+    hideAllPages();
+    document.getElementById('b2-container').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function hideAllPages() {
+    document.getElementById('page-a').classList.add('hidden');
+    document.getElementById('page-b').classList.add('hidden');
+    document.getElementById('page-c').classList.add('hidden');
+    document.getElementById('page-d').classList.add('hidden');
+    document.getElementById('page-e').classList.add('hidden');
+    document.getElementById('page-f').classList.add('hidden');
+    document.getElementById('page-g').classList.add('hidden');
+    document.getElementById('page-h').classList.add('hidden');
+    document.getElementById('b2-container').classList.add('hidden'); // 确保B2页面返回时隐藏
+    document.querySelector('.my-form').style.display = 'none'; // 隐藏表单
+}
+
+// 涂鸦功能代码
+let canvas = document.getElementById('graffitiCanvas');
+        let ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let x = 0, y = 0;
+
+        // 初始化画布大小
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const savedDrawing = localStorage.getItem('graffitiDrawing');
+            if (savedDrawing) {
+                const img = new Image();
+                img.src = savedDrawing;
+                img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // 获取鼠标位置
+        function getMousePos(evt) {
+            const rect = canvas.getBoundingClientRect();
+            return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
+        }
+
+        // 开始绘制
+        canvas.addEventListener('mousedown', (e) => {
+            const pos = getMousePos(e);
+            x = pos.x;
+            y = pos.y;
+            isDrawing = true;
+        });
+
+        // 绘制过程
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDrawing) {
+                const pos = getMousePos(e);
+                drawLine(x, y, pos.x, pos.y);
+                x = pos.x;
+                y = pos.y;
+            }
+        });
+
+        // 停止绘制
+        canvas.addEventListener('mouseup', () => {
+            if (isDrawing) {
+                isDrawing = false;
+                saveDrawing();
+            }
+        });
+
+        // 画线函数
+        function drawLine(x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 2; //笔粗细
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+        // 保存绘画内容到 localStorage
+        function saveDrawing() {
+            const drawing = canvas.toDataURL();
+            localStorage.setItem('graffitiDrawing', drawing);
+        }
+
+        // 清除画布内容
+        function clearGraffiti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            localStorage.removeItem('graffitiDrawing');
+        }
+
+        function clearGraffiti() {
+    const canvas = document.getElementById('graffitiCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // 清除 localStorage 中的涂鸦数据
+    localStorage.removeItem('graffitiDrawing'); 
+    
+    // 清除画布内容
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
+}
+
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', resizeCanvas);
+        window.addEventListener('resize', resizeCanvas);
+
+
+        function gradualCountDisplay(targetCount) {
+            var countElement = document.getElementById('count');
+            var currentCount = parseInt(localStorage.getItem('clickCount')) || 0;
+            countElement.style.display = 'block';
+
+            var interval = setInterval(function () {
+                if (currentCount < targetCount) {
+                    currentCount += 1;
+                    countElement.innerHTML = currentCount + '次点击';
+                } else {
+                    countElement.innerHTML = targetCount + '次点击';
+                    clearInterval(interval);
+                }
+                localStorage.setItem('clickCount', currentCount);
+            }, 50);
+
+            setTimeout(function () {
+                countElement.classList.remove('animate');
+            }, 1000);
+        }
+
+        window.onload = function() {
+    // 图片初始化
+    var imgElement = document.querySelectorAll('.button-img');
+    imgElement.forEach((imgElement, index) => {
+        imgElement.src = images[index];
+    });
+
+    // 点击次数的显示
+    if (localStorage.getItem('clickCount')) {
+        document.getElementById('count').innerHTML = localStorage.getItem('clickCount') + '次点击';
+    } else {
+        document.getElementById('count').style.display = 'none';
+    }
+
+    // 显示涂鸦
+    resizeCanvas();
+    const savedDrawing = localStorage.getItem('graffitiDrawing');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // 获取并显示用户名称
+    const savedName = localStorage.getItem('displayName'); // 获取存储的名称
+    if (savedName) {
+        document.getElementById('name-display').innerText = "用户名称: " + savedName; // 显示名称
+    } else {
+        document.getElementById('name-display').innerText = "用户名称: 匿名"; // 默认显示匿名
+    }
+}
+
+    </script>
+    
+    <form class="my-form" onsubmit="submitName(event)">
+        <input type="text" placeholder="输入内容">
+        <button type="submit" class="submit-btn">提交</button>
+    </form>
+    
+    
+
+</body>
+</html>
